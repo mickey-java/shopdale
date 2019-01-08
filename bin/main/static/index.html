@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="./lib/bootstrap.min.css">
+</head>
+
+<body>
+	<div id="root">
+
+		<div id="header">HEADER</div>
+
+		<div id="content">
+
+			<h4 class="type"">T-Shirts</h4>
+			<div class="product" id="t0">t-shirt1</div>
+			<div class="product" id="t1">t-shirt2</div>
+			<div class="product" id="t2">t-shirt3</div>
+
+			<hr />
+
+			<h4 class="type">Hoodie</h4>
+			<div class="product" id="h0">p1</div>
+			<div class="product" id="h1">p2</div>
+			<div class="product" id="h2">p2</div>
+
+		</div>
+
+
+	</div>
+</body>
+
+<script src="./lib/jquery-3.3.1.min.js"></script>
+
+<script>
+	var ele = $("#root").html();
+	
+	$.getJSON("/all-products", (typeList) => {
+		
+		var types = Object.keys(typeList);
+		var contentHtml = "";
+		
+		types.forEach(type => {
+			
+			var typeHtml = "<h4 class='type'>" + type + " -type inga varudhu paaru!" + "</h4>"
+			
+			typeList[type].forEach((product, index) => {
+			
+				var itemName = "<h4 class='p-1 bg-success text-white'>" + product.name + "</h4>";
+				var itemPrice = "<h5 class='p-2 badge badge-success'>" + product.price + "</h5>";
+				var addToCartButton = "<button class='p-2 btn btn-danger'>" + product.id + "</button>";
+				var removeFromCartButton = "<button class='p-2 btn btn-secondary'>" + product.id + "</button>";
+				
+				var productHtml = "<div class='m-2 p-2'>" + itemName + itemPrice + addToCartButton + removeFromCartButton + "</div>";
+				
+				typeHtml = typeHtml + productHtml;
+			});
+			contentHtml = contentHtml + typeHtml;
+		});
+		$("#content").html(contentHtml);
+	});
+	
+	//alert(JSON.stringify(ele));
+</script>
+
+<style>
+.product {
+	color: red;
+	width: 300px;
+	display: inline-block;
+}
+
+* {
+	border: 1px solid blue;
+}
+</style>
+
+</html>
